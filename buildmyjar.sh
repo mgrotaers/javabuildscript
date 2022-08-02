@@ -76,6 +76,7 @@ then
           echo "Assemble jar file"
           sudo mkdir temp-dir 
           sudo cp -r ./bin/*.class ./temp-dir
+          # Include 
           #sudo cp -r ./lib/*.jar ./temp-dir
           #cd temp-dir 
 
@@ -89,9 +90,13 @@ then
           #cd ..
 
           # Create an executable jar file and clean up.
-          sudo jar cvfe $2 $1 -C ./temp-dir/ .
-          #sudo jar cvf $2 -C ./temp-dir/ .
-          #sudo jar cvfm $3 META-INF/MANIFEST.MF -C ./temp-dir/ .
+          if [[ -f "./META-INF/MANIFEST.MF" ]]
+          then
+               sudo jar cvfm $2 META-INF/MANIFEST.MF -C ./temp-dir/ .
+          else
+               sudo jar cvfe $2 $1 -C ./temp-dir/ .
+          fi
+          # Create executable and clean up
           sudo chmod a+x $2
           sudo rm -r temp-dir
      else
