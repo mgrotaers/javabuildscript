@@ -55,7 +55,8 @@ then
           then 
                #get all files in lib directory
                echo "Compile with all files in lib directory"
-               #sudo javac -d bin ./src/$mainjava -classpath 'ls ./lib'
+               #sudo javac -d bin ./src/$mainjava
+               sudo javac -d bin ./src/$mainjava -classpath 'ls ./lib/*'
           else
                echo "Compile java file only, no libs"
                sudo javac -d bin ./src/$mainjava
@@ -76,27 +77,30 @@ then
           echo "Assemble jar file"
           sudo mkdir temp-dir 
           sudo cp -r ./bin/*.class ./temp-dir
-          # Include 
-          #sudo cp -r ./lib/*.jar ./temp-dir
-          #cd temp-dir 
-
-          #jar-list=get all jar file names
-          #for jar-name in $jar-list
-          #do
-          #     sudo jar xf jar-name.jar
-          #     sudo rm jar-name.jar
-          #done
-
-          #cd ..
+          if [[ $(ls ./lib/*.jar | wc -l) -gt 0 ]]
+          then
+               #extract all lib jar files for their class files and clean up
+               sudo cp -r ./lib/*.jar ./temp-dir
+               #jar-list-dir=./lib
+               cd temp-dir
+               for jarname in ./*.jar
+               do
+                    echo "jar file: "$jarname
+                    sudo jar xf $jarname
+                    sudo rm $jarname
+               done
+               cd ..
+          fi
 
           # Create an executable jar file and clean up.
           if [[ -f "./META-INF/MANIFEST.MF" ]]
           then
+               echo "Using Manifest file to create jar"
                sudo jar cvfm $2 META-INF/MANIFEST.MF -C ./temp-dir/ .
           else
+               echo "Creating dummy Manifest file"
                sudo jar cvfe $2 $1 -C ./temp-dir/ .
           fi
-          # Create executable and clean up
           sudo chmod a+x $2
           sudo rm -r temp-dir
      else
