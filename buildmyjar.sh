@@ -43,8 +43,6 @@ echo "Project name: "$projectname
 mainjava=$1".java"
 echo "Main java file: "$mainjava
 
-
-
 # Compile Java files with classpath if required. 
 # check src directory contains Java file of same name as the project directory name.
 if [[ -f "./src/$mainjava" ]]
@@ -55,8 +53,7 @@ then
           then 
                #get all files in lib directory
                echo "Compile with all files in lib directory"
-               #sudo javac -d bin ./src/$mainjava
-               sudo javac -d bin ./src/$mainjava -classpath 'ls ./lib/*'
+               sudo javac -d bin ./src/$mainjava -classpath $(ls ./lib/*)
           else
                echo "Compile java file only, no libs"
                sudo javac -d bin ./src/$mainjava
