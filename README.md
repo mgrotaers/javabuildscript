@@ -15,6 +15,6 @@ Directory Structure of project to compile and make executable jar file must cont
 Usage Example of script:
    > ./buildmyjar.sh MainJavaFile namejarfile.jar
 
-Script works as is, as long as appropriate structure and usage is as required by script.
+Script works as is, as long as appropriate structure and usage is applied as required by script.
 
 It is understood that the script can be made more efficient, but is in currently working condition.
